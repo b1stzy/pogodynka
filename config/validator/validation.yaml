@@ -1,0 +1,54 @@
+App\Entity\Location:
+    properties:
+        city:
+            - NotBlank:
+                  groups: [create, edit]
+            - Length:
+                  min: 2
+                  max: 255
+                  groups: [create, edit]
+        country:
+            - NotBlank:
+                  groups: [create, edit]
+        latitude:
+            - NotBlank:
+                  groups: [create, edit]
+            - Range:
+                  min: -90
+                  max: 90
+                  invalidMessage: 'This value should be between -90 and 90.'
+                  groups: [create]
+            - Range:
+                  min: -80
+                  max: 80
+                  invalidMessage: 'For edit, latitude must be between -80 and 80.'
+                  groups: [edit]
+        longitude:
+            - NotBlank:
+                  groups: [create, edit]
+            - Range:
+                  min: -180
+                  max: 180
+                  groups: [create, edit]
+
+App\Entity\Weather:
+    properties:
+        temperature:
+            - NotBlank:
+                  groups: [create, edit]
+            - Range:
+                  min: -60
+                  max: 60
+                  invalidMessage: 'Temperature must be between -60 and 60.'
+                  groups: [create]
+            - Range:
+                  min: -50
+                  max: 50
+                  invalidMessage: 'For edit, temperature must be between -50 and 50.'
+                  groups: [edit]
+        date:
+            - NotBlank:
+                  groups: [create, edit]
+        location:
+            - NotBlank:
+                  groups: [create, edit]

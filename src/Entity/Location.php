@@ -113,7 +113,6 @@ class Location
     public function removeWeather(Weather $weather): static
     {
         if ($this->weather->removeElement($weather)) {
-            // set the owning side to null (unless already changed)
             if ($weather->getLocation() === $this) {
                 $weather->setLocation(null);
             }
