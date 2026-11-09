@@ -7,15 +7,15 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Date</th>
-                <th>Temperature</th>
-                <th>Humidity</th>
-                <th>Pressure</th>
-                <th>Wind_speed</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Temperature</th>
+            <th>Humidity</th>
+            <th>Pressure</th>
+            <th>Wind_speed</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for weather in weather %}
@@ -27,8 +27,12 @@
                 <td>{{ weather.pressure }}</td>
                 <td>{{ weather.windSpeed }}</td>
                 <td>
-                    <a href="{{ path('app_weather_show', {'id': weather.id}) }}">show</a>
-                    <a href="{{ path('app_weather_edit', {'id': weather.id}) }}">edit</a>
+                    {% if is_granted('ROLE_MEASUREMENT_SHOW') %}
+                        <a href="{{ path('app_weather_show', {'id': weather.id}) }}">show</a>
+                    {% endif %}
+                    {% if is_granted('ROLE_MEASUREMENT_EDIT') %}
+                        <a href="{{ path('app_weather_edit', {'id': weather.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
@@ -39,5 +43,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_weather_new') }}">Create new</a>
+    {% if is_granted('ROLE_MEASUREMENT_NEW') %}
+        <a href="{{ path('app_weather_new') }}">Create new</a>
+    {% endif %}
 {% endblock %}
