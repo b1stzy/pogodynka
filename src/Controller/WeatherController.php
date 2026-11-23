@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Location;
 use App\Entity\Weather;
 use App\Form\WeatherType;
 use App\Repository\WeatherRepository;
+use App\Service\WeatherUtil;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +24,22 @@ final class WeatherController extends AbstractController
     {
         return $this->render('weather/index.html.twig', [
             'weather' => $weatherRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/{country}/{city}', name: 'app_weather_city', methods: ['GET'], requirements: ['country' => '[A-Za-z]{2}'])]
+    public function city(
+        #[MapEntity(mapping: ['country' => 'country', 'city' => 'city'])] Location $location,
+        WeatherUtil $weatherUtil,
+    ): Response {
+        $measurements = $weatherUtil->getWeatherForCountryAndCity(
+            $location->getCountry(),
+            $location->getCity(),
+        );
+
+        return $this->render('weather/city.html.twig', [
+            'location' => $location,
+            'measurements' => $measurements,
         ]);
     }
 
