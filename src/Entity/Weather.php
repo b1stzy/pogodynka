@@ -74,6 +74,27 @@ class Weather
         return $this;
     }
 
+    public function getCelsius(): ?float
+    {
+        return $this->temperature !== null ? (float) $this->temperature : null;
+    }
+
+    public function setCelsius(float|int|string $celsius): static
+    {
+        $this->temperature = (string) $celsius;
+
+        return $this;
+    }
+
+    public function getFahrenheit(): ?float
+    {
+        if ($this->temperature === null) {
+            return null;
+        }
+
+        return round($this->getCelsius() * 9 / 5 + 32, 1);
+    }
+
     public function getHumidity(): ?int
     {
         return $this->humidity;
